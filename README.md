@@ -1,5 +1,5 @@
 # DomainMotionInertiaTensor
-Quantitative Characterization of Domain Motions in Molecular Machines 
+Maji, S. et al. 2017. Quantitative Characterization of Domain Motions in Molecular Machines. 
 https://doi.org/10.1021/acs.jpcb.6b10732
 
 Dependencies:
