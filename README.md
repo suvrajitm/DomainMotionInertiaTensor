@@ -3,7 +3,7 @@ Maji, S. et al. 2017. Quantitative Characterization of Domain Motions in Molecul
 https://doi.org/10.1021/acs.jpcb.6b10732
 
 Dependencies:
-1. DIP image library (for segmentation), executables for segmentation provided). Download and put it under the Utilities folder
+1. DIP image library (for segmentation, executables for segmentation code written in Matlab/DIP image provided). Download and put it under the Utilities folder
 2. LA library in Tcl (already included in the Utilities folder) 
 
 Pending issue:  Due to the random eigenvector sign flipping, sometimes the axes sign switches direction from one pdb to another pdb. A robust fix for this is available in the literature, but did not have the time to implement that back in 2016-2017, since I moved on to a different project.
