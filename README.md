@@ -7,6 +7,11 @@ Dependencies:
 2. Orient package in Tcl by Paul Grayson, See https://www.ks.uiuc.edu/Research/vmd/script_library/scripts/orient/ (included in the Utilities folder and a modified script)
 4. LA library in Tcl (Linear algebra library already included in the Utilities folder) 
 
+
+DomainMotionInertiaTensor.tcl is the starting script to run.
+You can set the domain definitions obtained either through segmentation or from a reference in the script SetDomainSegments.tcl
+
+
 Notes: 
 Although this code was uploaded in April 2022, it has not been updated since 2017.  
 
