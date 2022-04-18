@@ -9,6 +9,9 @@ Dependencies:
 
 
 DomainMotionInertiaTensor.tcl is the starting script to run.
+
+AbsoluteOrientation.tcl implements the procedures/functions and is the core of the motion characterization method along with the inertia tensor and principal axes calculation
+
 You can set the domain definitions obtained either through segmentation or from a reference in the script SetDomainSegments.tcl
 
 
