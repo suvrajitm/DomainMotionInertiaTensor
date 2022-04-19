@@ -14,7 +14,7 @@ AbsoluteOrientation.tcl implements the procedures/functions and is the core of t
 
 You can set the domain definitions obtained either through segmentation or from a reference, in the script SetDomainSegments.tcl.
 
-SegmentDensityMap.tcl is used for segmenting the map. There is a variable "mapSeglist_idx" in this script which is used to keep track of the segment indices. It can be set automatically but here it has been set manually for the data at hand with 4 /different segments. 
+SegmentDensityMap.tcl is used for segmenting the map. There is a variable "mapSeglist_idx" in this script which is used to keep track of the segment indices. It can be set automatically but here it has been set manually for the data at hand with 4 different segments (0 - 3) to match the indices of the segmented domains. 
 
 
 Notes: 
