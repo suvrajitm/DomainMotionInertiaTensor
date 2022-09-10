@@ -18,7 +18,5 @@ SegmentDensityMap.tcl is used for segmenting the map. There is a variable "mapSe
 
 
 Notes: 
-Although this code was uploaded in April 2022, it has not been updated since 2017.  
-
-Pending issue:  Due to the random sign flip of eigenvectors , sometimes the axes sign flips in direction from one pdb to another pdb (small changes in the residue position or mass distribution). Although a robust fix for the flips is available in the literature, the fix was not implemented back in 2016-2017, as I moved on to a different project.
-Some simple criteria is there in the code to check for the sign flip, but it does not cover for all cases, so if there is flipped axes coordinate from the output files and then a custom change via the provided script for reversal of the sign of the coordinate axes is required. The adjusted axes should then be provide as input for calculating the motion between the sets of coordinate axes.
+Pending issue:  Due to the random sign flip of eigenvectors , sometimes the axes sign flips in direction from one pdb to another pdb (small changes in the residue position or mass distribution). Although a fix for the sign flips is available in the literature, and needs to be implemented in the Orient script.
+Some simple fix for sign flip is there but does not cover for all cases, so if there is flipped axes coordinate from the output files and then a custom change is required via the provided script for reversal of the sign of the coordinate axes. The adjusted axes should then be provide as input for calculating the motion between the sets of coordinate axes.
