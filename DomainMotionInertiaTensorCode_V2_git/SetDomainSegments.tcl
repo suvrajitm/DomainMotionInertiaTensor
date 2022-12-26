@@ -26,13 +26,14 @@ puts "\nSetting domain segments with the corresponding residue indices ...\n"
 set ef2data 0
 #set ef2_full_ligand 0
 set mData0 0
-set mData 1
+set mData 0
+set mSSUData 1
 
 set all_atom_tensorcalc 0
 
 
 if {$all_atom_tensorcalc==0} {
-set atoms_to_use "P OP1 O1P OP2 O2P OP3 O3P O3' O5' C3' C4' C5'" 
+  set atoms_to_use "P OP1 O1P OP2 O2P OP3 O3P O3' O5' C3' C4' C5'" 
 }
 
 # otherwise use only the P atoms for faster inertia tensor calculations
@@ -84,20 +85,20 @@ if {$segment_map==1 && $use_reference_segmentation==0} {
 
   for {set seg_no 0} {$seg_no < [llength $domain_sels_from_volSegment_reshuffle]} {incr seg_no} {
 
-      set domain_seg_name [lindex $domain_sels_from_volSegment_reshuffle $seg_no]
-      #set domain_sel [subst $$domain_name]
-      if {([info exists $domain_seg_name]==1)} {
-          unset $domain_seg_name
-      }
-      ### set only the variables that have not been set before 
-      if {[lsearch -exact $domain_sels_refdef $domain_seg_name]==-1} {
-          puts "\nSetting segment number $seg_no, $domain_seg_name definition.\n"
-          #### assign the segmented volumes to the corresponding segment names
-          set domResvar "residue_idx_vol$seg_no"
-          set domRes_ids [subst $$domResvar] 
-          set $domain_seg_name "(residue $domRes_ids)"
-          set segmented_domains_defined 1
-      }
+    set domain_seg_name [lindex $domain_sels_from_volSegment_reshuffle $seg_no]
+    #set domain_sel [subst $$domain_name]
+    if {([info exists $domain_seg_name]==1)} {
+        unset $domain_seg_name
+    }
+    ### set only the variables that have not been set before 
+    if {[lsearch -exact $domain_sels_refdef $domain_seg_name]==-1} {
+        puts "\nSetting segment number $seg_no, $domain_seg_name definition.\n"
+        #### assign the segmented volumes to the corresponding segment names
+        set domResvar "residue_idx_vol$seg_no"
+        set domRes_ids [subst $$domResvar] 
+        set $domain_seg_name "(residue $domRes_ids)"
+        set segmented_domains_defined 1
+    }
   }
   
   if { $segmented_domains_defined == 0} {
@@ -115,63 +116,73 @@ if {$use_reference_segmentation==1} {
   puts "\nUsing reference definitions for the domains.\n"
   if {$ef2data==1} {
 
-      #set all_domain_sels_name [list "sel_lsu" "sel_ssu_body" "sel_ssu_head" "sel_ef2" "sel_ef2G" "sel_ef2D1" "sel_ef2D2" "sel_ef2D3" "sel_ef2D4" "sel_ef2D5" "sel_ef2D1D2" "sel_ef2D3D5"]
-      set all_domain_sels_name [list "sel_lsu" "sel_ssu_body" "sel_ssu_head" "sel_ef2" "sel_ef2D1" "sel_ef2D2" "sel_ef2D3" "sel_ef2D4" "sel_ef2D5" "sel_ef2D1D2" "sel_ef2D3D5"]
+    #set all_domain_sels_name [list "sel_lsu" "sel_ssu_body" "sel_ssu_head" "sel_ef2" "sel_ef2G" "sel_ef2D1" "sel_ef2D2" "sel_ef2D3" "sel_ef2D4" "sel_ef2D5" "sel_ef2D1D2" "sel_ef2D3D5"]
+    set all_domain_sels_name [list "sel_lsu" "sel_ssu_body" "sel_ssu_head" "sel_ef2" "sel_ef2D1" "sel_ef2D2" "sel_ef2D3" "sel_ef2D4" "sel_ef2D5" "sel_ef2D1D2" "sel_ef2D3D5"]
 
-      #set all_domain_sels_name [list "sel_lsu" "sel_ssu_body" "sel_ssu_head" "sel_ef2"]
+    #set all_domain_sels_name [list "sel_lsu" "sel_ssu_body" "sel_ssu_head" "sel_ef2"]
 
-      #set sel_lsu "(segname 25S 5S 5D8S \"L.*\") and (not segname P1 P2 P5 L45 SO1 GDP)" 
-      #set sel_ssu "(segname 18S \"S.*\" RACK) and (not segname P1 P2 P5 L45 SO1 GDP)"
-      #set sel_ef2 "(segname P1 P2 P5 L45 SO1 GDP)"
-      set sel_lsu  "(segname 25S 5S 5D8S \"L.*\") and (not segname L45)" 
-      set sel_ssu "(segname 18S \"S.*\" RACK) and (not segname SO1)"
-      set sel_ssu_body "((segname 18S and not (resid 1150 to 1635)) or (segname S11 S12 S15 S17 S1E S2 S21E S24E S26E S27E S30E S4 S4E S5 S6E S7E S8 S8E))"
-      set sel_ssu_head "((segname 18S and (resid 1150 to 1635)) or (segname RACK S10 S10E S12E S13 S14 S17E S19 S19E S25E S28E S3 S7 S9))"
-      #set sel_ef2 "(segname P1 P2 P3 P5 L45)"
+    #set sel_lsu "(segname 25S 5S 5D8S \"L.*\") and (not segname P1 P2 P5 L45 SO1 GDP)" 
+    #set sel_ssu "(segname 18S \"S.*\" RACK) and (not segname P1 P2 P5 L45 SO1 GDP)"
+    #set sel_ef2 "(segname P1 P2 P5 L45 SO1 GDP)"
+    set sel_lsu  "(segname 25S 5S 5D8S \"L.*\") and (not segname L45)" 
+    set sel_ssu "(segname 18S \"S.*\" RACK) and (not segname SO1)"
+    set sel_ssu_body "((segname 18S and not (resid 1150 to 1635)) or (segname S11 S12 S15 S17 S1E S2 S21E S24E S26E S27E S30E S4 S4E S5 S6E S7E S8 S8E))"
+    set sel_ssu_head "((segname 18S and (resid 1150 to 1635)) or (segname RACK S10 S10E S12E S13 S14 S17E S19 S19E S25E S28E S3 S7 S9))"
+    #set sel_ef2 "(segname P1 P2 P3 P5 L45)"
 
-      ## no head or body segmentation for ssu for reference segmentation
-      #set sel_ssu_body 
-      #set sel_ssu_head 
-      set sel_ef2 "(segname P1 P2 P3 P5 L45 SO1 GDP)"
-      set sel_ef2G "(segname P2 and resid 219 to 328)"
-      set sel_ef2D1 "((segname P1) or (segname P2 and ((resid 67 to 218) or (resid 329 to 345))))"
-      set sel_ef2D2 "(segname P2 and (resid 346 to 481))"
-      set sel_ef2D3 "(segname P2 and (resid 482 to 558))"
-      set sel_ef2D4 "(segname P2 and (resid 559 to 724) or (segname L45 and resid 801 to 842))"
-      set sel_ef2D5 "((segname P5) or (segname L45) and (resid 763 to 800))"
-      set sel_ef2D1D2 "((segname P1) or (segname P2 and ((resid 67 to 218) or (resid 329 to 345)))) or (segname P2 and (resid 346 to 481))"
-      set sel_ef2D3D5 "(segname P2 and (resid 482 to 558)) or ((segname P5) or (segname L45) and (resid 763 to 800))"
+    ## no head or body segmentation for ssu for reference segmentation
+    #set sel_ssu_body 
+    #set sel_ssu_head 
+    set sel_ef2 "(segname P1 P2 P3 P5 L45 SO1 GDP)"
+    set sel_ef2G "(segname P2 and resid 219 to 328)"
+    set sel_ef2D1 "((segname P1) or (segname P2 and ((resid 67 to 218) or (resid 329 to 345))))"
+    set sel_ef2D2 "(segname P2 and (resid 346 to 481))"
+    set sel_ef2D3 "(segname P2 and (resid 482 to 558))"
+    set sel_ef2D4 "(segname P2 and (resid 559 to 724) or (segname L45 and resid 801 to 842))"
+    set sel_ef2D5 "((segname P5) or (segname L45) and (resid 763 to 800))"
+    set sel_ef2D1D2 "((segname P1) or (segname P2 and ((resid 67 to 218) or (resid 329 to 345)))) or (segname P2 and (resid 346 to 481))"
+    set sel_ef2D3D5 "(segname P2 and (resid 482 to 558)) or ((segname P5) or (segname L45) and (resid 763 to 800))"
 
   }
 
 
   if {$mData0==1} {
 
-set all_domain_sels_name [list "sel_23S" "sel_5S" "sel_16S" "sel_ssu_dom1" "sel_ssu_dom2" "sel_ssu_dom3_major" "sel_ssu_dom3_minor" "sel_eftu_trna" "sel_psite" "sel_esite"]
+    set all_domain_sels_name [list "sel_23S" "sel_5S" "sel_16S" "sel_ssu_dom1" "sel_ssu_dom2" "sel_ssu_dom3_major" "sel_ssu_dom3_minor" "sel_eftu_trna" "sel_psite" "sel_esite"]
 
-#set sel_lsu "(chain A to Z) or (chain 0 to 6)"
-set sel_23S "chain A"
-set sel_5S "chain B"
-set sel_16S "chain a"
-set sel_ssu_dom1 "(chain a) and (resid 1 to 566)"
-set sel_ssu_dom2 "(chain a) and (resid 567 to 912)"
-set sel_ssu_dom3_major "(chain a) and (resid 913 to 1396)"
-set sel_ssu_dom3_minor "(chain a) and (resid 1397 to 1539)"
-set sel_eftu_trna "chain 'z' 'y'"  
-set sel_psite "chain v"
-      set sel_esite "chain w"
+    #set sel_lsu "(chain A to Z) or (chain 0 to 6)"
+    set sel_23S "chain A"
+    set sel_5S "chain B"
+    set sel_16S "chain a"
+    set sel_ssu_dom1 "(chain a) and (resid 1 to 566)"
+    set sel_ssu_dom2 "(chain a) and (resid 567 to 912)"
+    set sel_ssu_dom3_major "(chain a) and (resid 913 to 1396)"
+    set sel_ssu_dom3_minor "(chain a) and (resid 1397 to 1539)"
+    set sel_eftu_trna "chain 'z' 'y'"  
+    set sel_psite "chain v"
+    set sel_esite "chain w"
   }
   
   
   
-    if {$mData==1} {
+  if {$mData==1} {
 
-set all_domain_sels_name [list "sel_seg1" "sel_seg2"]
-set sel_seg1 "chain A to Z 0 to 6"
-set sel_seg2 "chain a to v"
+    set all_domain_sels_name [list "sel_seg1" "sel_seg2"]
+    set sel_seg1 "chain A to Z 0 to 6"
+    set sel_seg2 "chain a to v"
   
-
   }
+  
+   if {$mSSUData==1} {
+
+    set all_domain_sels_name [list "sel_ssu_body" "sel_ssu_head"]
+    set sel_ssu_body "(chain c d e g j k n o p q s t w) or ( chain v and resid 1 to 930 1069 to 1089 1098 to 1104 1389 to 1540)"
+    set sel_ssu_head  "(chain f h i l m r u 'x') or (chain v and resid 931 to 1068 1090 to 1097 1105 to 1388)"
+  
+  }
+  
+ 
+  
 
 }
 
@@ -192,7 +203,7 @@ if {$map_segment_only == 0} {
 ####### set the color id of the segments and axes
 
 if {$ef2data==1} {
-  set colorid_res {23 4 31 1 17 19 20 14 25 17 21 22 28 29} 
+    set colorid_res {23 4 31 1 17 19 20 14 25 17 21 22 28 29} 
 
   if {$segment_map==1} {
     ##  set colorid_map {23 4 31 1 17}
@@ -213,6 +224,12 @@ if {$mData0==1} {
 if {$mData==1} {
   #mdata data
   set colorid_res {22 4} 
+}
+
+if {$mSSUData==1} {
+   
+  set colorid_res {4 3} 
+
 }
 
 set axiscolors $colorid_res
@@ -253,8 +270,16 @@ if {$mData==1} {
 
 }
 
+if {$mSSUData==1} {
 
-set fixDomNum 0
+  ### mSSUData
+  set which_dom_to_compute {0 1}
+  set compute_allatomonly_dom {0 1}
+
+}
+
+
+set fixDomNum 1
 # align LSU to XYZ
 
 set domain_sels_name {}
