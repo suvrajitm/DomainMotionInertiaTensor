@@ -104,10 +104,16 @@ if {$calc_tensor > 0} {
     puts "\n***Computing the principal axes for the reference molecule $fixedDomain_name ...\n"
     #(a) First Align the molecule-to-be-fixed, e.g Principal Axis 3 to the Z-axis {0 0 1} 
     set adjust_direction 0
+
+    # December 28, 2022. Manually flip axis/axes at this step so that output visualization of axes is consistent with other pdb models in case the axes are 
+    # randomly flipped due to small changes 
+    set man_flip1_a1a2a3 {1 1 1}
+    set man_flip2_a1a2a3 {1 1 1}
+    # no flip if 1 1 1
     set Iref {}
     set Jref {}
 
-    set Iref [Orient::calc_principalaxes $fixedMol $adjust_direction]
+    set Iref [Orient::calc_principalaxes $fixedMol $adjust_direction $man_flip1_a1a2a3]
     puts "\nIref=$Iref"
     
     set A [orient $fixedMol [lindex $Iref 2] {0 0 1}]
@@ -119,7 +125,7 @@ if {$calc_tensor > 0} {
         
     #(b) Next Align the molecule-to-be-fixed, Principal Axis 2 to the Y-axis {0 1 0} 
 
-    set Jref [Orient::calc_principalaxes $fixedMol $adjust_direction]
+    set Jref [Orient::calc_principalaxes $fixedMol $adjust_direction $man_flip2_a1a2a3] 
     puts "\nJref=$Jref"
 
 
@@ -215,8 +221,27 @@ if {$calc_tensor > 0} {
         set dom_tensor $domain_name$ts
         ### note that $dom_tensor (instead of just dom_tensor) creates the variable for storing the principal axes for the domain
         ### so the syntax "set $dom_tensor [ ] ... " is correct
-        set $dom_tensor [draw principalaxes $domain_sel_align_mol $axiscol $axislblcol $adjust_direction $adjust_scale]
+        
+        
+        set manual_flip_tensor 0
+        if {$manual_flip_tensor > 0} {  
+               puts "do manual flip of $dom_tensor"
+                   # December 28, 2022. Manually flip axis/axes at this step so that output visualization of axes is consistent with other pdb models in case the axes are randomly flipped due to small changes 
+               if {$dn==$fixedDomain_ind} {
+                  set man_flip_a1a2a3 {-1 -1 1}
+               } else {
+                  set man_flip_a1a2a3 {-1 -1 -1}
+               }	  
+               
+               
+         } else {
+               set man_flip_a1a2a3 {1 1 1}
+         }
 
+        
+        set $dom_tensor [draw principalaxes $domain_sel_align_mol $axiscol $axislblcol $adjust_direction $man_flip_a1a2a3 $adjust_scale]
+        
+	
         lappend Principal_axes_domain_names $dom_tensor
     }
 }

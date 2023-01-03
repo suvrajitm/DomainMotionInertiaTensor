@@ -8,7 +8,7 @@
 ## 
 ## Suvrajit Maji,sm4073@cumc.columbia.edu 
 ## Columbia University
-## Created: Feb, 2015. Modified: September,2022 
+## Created: May,2022. Modified: January,2023 
 ###############################################################################################################
 
 proc ShowDomainAxisAngleQuat {nFiles AllModel_absorientQAxisAngle domname molid allmodel_domains_cen initmodel_dom_cen rotaxiscol rotaxislblcol QuatRotAxisFile QuatEulerAnglesFile fixDomNum dn} {
@@ -26,16 +26,23 @@ proc ShowDomainAxisAngleQuat {nFiles AllModel_absorientQAxisAngle domname molid 
 		puts "\n\nHinge axis: $rotaxisDomain" 
 		puts "Hinge point: $rotaxisOrigin"
 		graphics $molid color $rotaxiscol
-		vmd_draw_vector $molid $rotaxisOrigin [vecscale $scale1 $rotaxisDomain]
+		#vmd_draw_vector $molid $rotaxisOrigin [vecscale $scale1 $rotaxisDomain]
 		#graphics $molid text [vecadd $rotaxisOrigin [vecscale $scale2 $rotaxisDomain]] $axislabel size 1.5 thickness 2	
 		set minmax_coord [measure minmax [atomselect top all]]
 		lassign $minmax_coord minc maxc 
 		set bs [vecdist $minc $maxc]
-		set bs2 [expr 0.8*$bs/2.0]     
-		set st_pt [vecadd $rotaxisOrigin [vecscale [expr -1.0*$bs2] $rotaxisDomain]]
-		set end_pt [vecadd $rotaxisOrigin [vecscale $bs2 $rotaxisDomain]]
-		graphics $molid line $st_pt $end_pt style dashed width 7
+		#set bs2 [expr 0.8*$bs/2.0]   
+		#set st_pt [vecadd $rotaxisOrigin [vecscale [expr -1.0*$bs2] $rotaxisDomain]]  
+		#set end_pt [vecadd $rotaxisOrigin [vecscale $bs2 $rotaxisDomain]]
+		#graphics $molid line $st_pt $end_pt style dashed width 7
 		
+		set bs2 [expr 0.8*$bs/2.0]  
+		set st_pt [vecadd $rotaxisOrigin [vecscale [expr -0.8*$bs2] $rotaxisDomain]]
+		set end_pt [vecadd $rotaxisOrigin [vecscale [expr 0.8*$bs2] $rotaxisDomain]]
+		set middle_pt [vecadd $st_pt [vecscale 0.9 [vecsub $end_pt $st_pt]]]
+		graphics $molid cylinder $st_pt $middle_pt  radius 2.5
+		graphics $molid cone $middle_pt $end_pt radius 5
+
 		set hingeaxisline [vecsub $end_pt $st_pt]
 
 		set n [expr round(2.0*$bs2/3.0)]
@@ -50,7 +57,7 @@ proc ShowDomainAxisAngleQuat {nFiles AllModel_absorientQAxisAngle domname molid 
 			lassign $hp hx hy hz
 			set mol_selres [atomselect $molid "sqr(x-$hx)+sqr(y-$hy)+sqr(z-$hz)< sqr($contactDist)"]
 			lappend h_selind [$mol_selres get index]
-			graphics $molid sphere $hp radius 1.0
+			#graphics $molid sphere $hp radius 1.0
 		}
 
 		set hinge_selinds [lsort -unique -integer [concat {*}$h_selind]]  

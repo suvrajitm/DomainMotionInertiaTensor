@@ -45,9 +45,12 @@ set contactDist 6.0
 #set dataset "splitting-c2"
 #set dataset "splitting-c3"
 
-set dataset "30Sstate12"
-#set dataset "70Snohflxcontrol"
+#set dataset "30Sstate12"
 #set dataset "asso-3state"
+
+set dataset "splitting-12"
+#set dataset "splitting-13"
+#set dataset "70Snohflxcontrol"
 
 #set PDBdir "../../../DomainMotionProjectData/EF2Data/PDBData/$dataset"
 set PDBdir "../pdb_files/$dataset" 

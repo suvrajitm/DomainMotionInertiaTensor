@@ -112,12 +112,12 @@ proc Orient::max { args } {
 }
 
 # draws the three principal axes
-proc vmd_draw_principalaxes { mol sel axiscol axislblcol adjustdirection adjustscale {weights domass} } {
+proc vmd_draw_principalaxes { mol sel axiscol axislblcol adjustdirection man_flip_a1a2a3 adjustscale {weights domass} } {
     if { $weights == "domass" } {
         set weights [ $sel get mass ]
     }
 
-    set I [Orient::calc_principalaxes $sel $adjustdirection $weights ]
+    set I [Orient::calc_principalaxes $sel $adjustdirection $man_flip_a1a2a3 $weights ]
     set a1 [lindex $I 0]
     set a2 [lindex $I 1]
     set a3 [lindex $I 2]
@@ -153,7 +153,7 @@ proc vmd_draw_principalaxes { mol sel axiscol axislblcol adjustdirection adjusts
 }
 
 # returns the three principal axes
-proc Orient::calc_principalaxes { sel adjustdirection {weights domass} } {
+proc Orient::calc_principalaxes { sel adjustdirection man_flip_a1a2a3 {weights domass} } {
     puts "\nCalculating principal axes."
     if { $weights == "domass" } {
         set weights [ $sel get mass ]
@@ -199,6 +199,7 @@ proc Orient::calc_principalaxes { sel adjustdirection {weights domass} } {
 	set axis_coordinate_sign 0
 	set axisprojectionval 0.70
 
+        
 	if {$max_coordinate_axis == 1} {
 
 	      #find the max absolute values of the x,y,z - coords
@@ -391,7 +392,7 @@ proc Orient::calc_principalaxes { sel adjustdirection {weights domass} } {
 	    }  
 	}
 	
-	
+
 	proc flipSignv1 {v1 vx vy vz} {
 	   if {$v1 < 0.0} {
 		set vsgn -1
@@ -412,6 +413,7 @@ proc Orient::calc_principalaxes { sel adjustdirection {weights domass} } {
 	    puts "a1y = $a1y"  
 	    puts "a1z = $a1z\n"  
             puts "\nAttempting sign flip a1 ..."
+            
 	    lassign [flipSignv1 $a1x $a1x $a1y $a1z] a1x a1y a1z sgna1
 	    if {$sgna1 < 0} {
 		puts "\nNote: Principal axis 1 has been inverted to keep the orientation consistent with positive X direction.\n"
@@ -456,7 +458,29 @@ proc Orient::calc_principalaxes { sel adjustdirection {weights domass} } {
     set a2 "$a2x $a2y $a2z"
     set a3 "$a3x $a3y $a3z"
     
-    return [list $a1 $a2 $a3]
+    set Axes [list $a1 $a2 $a3]
+      
+    lassign $man_flip_a1a2a3 flipA1 flipA2 flipA3
+  
+    
+    proc FlipAxes {Axes flipA1 flipA2 flipA3} {
+         set PA1 [lindex $Axes 0]
+     	 set PA2 [lindex $Axes 1]
+         set PA3 [lindex $Axes 2]
+
+         set PA1 [vecscale $flipA1 $PA1]
+         set PA2 [vecscale $flipA2 $PA2]
+         set PA3 [vecscale $flipA3 $PA3]
+
+         set Axes [list $PA1 $PA2 $PA3]
+         return $Axes
+    }
+         
+    set Axes [FlipAxes $Axes $flipA1 $flipA2 $flipA3]
+	
+	
+    return $Axes
+    #return [list $a1 $a2 $a3]
 }
 
 

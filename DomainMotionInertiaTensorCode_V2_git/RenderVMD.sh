@@ -11,7 +11,7 @@ renderoption=$2
 #setenv TACHYONBIN /usr/local/lib/vmd/tachyon_LINUXAMD64 
 #setenv TACHYONBIN /guam.raid.home/sbgrid/programs/x86_64-linux/vmd/1.9.2/lib/tachyon_LINUXAMD64
 
-export TACHYONBIN='/guam.raid.home/sbgrid/programs/x86_64-linux/vmd/1.9.2/lib/tachyon_LINUXAMD64' 
+export TACHYONBIN='/usr/local/lib/vmd/tachyon_LINUXAMD64' 
 
 if [ $renderoption = 1 ] ; then
 

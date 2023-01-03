@@ -26,14 +26,19 @@ puts "\nSetting domain segments with the corresponding residue indices ...\n"
 set ef2data 0
 #set ef2_full_ligand 0
 set mData0 0
-set mData 0
-set mSSUData 1
+set mData 1
+set mSSUData 0
 
-set all_atom_tensorcalc 0
+set fixDomNum 0
+# example domNum=0 means dom=0 (let's say LSU) is aligned to XYZ
+
+set all_atom_tensorcalc 1
 
 
 if {$all_atom_tensorcalc==0} {
   set atoms_to_use "P OP1 O1P OP2 O2P OP3 O3P O3' O5' C3' C4' C5'" 
+} else {
+  set atoms_to_use "all"
 }
 
 # otherwise use only the P atoms for faster inertia tensor calculations
@@ -279,8 +284,7 @@ if {$mSSUData==1} {
 }
 
 
-set fixDomNum 1
-# align LSU to XYZ
+
 
 set domain_sels_name {}
 
