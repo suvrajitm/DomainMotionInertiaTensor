@@ -222,15 +222,19 @@ if {$calc_tensor > 0} {
         ### note that $dom_tensor (instead of just dom_tensor) creates the variable for storing the principal axes for the domain
         ### so the syntax "set $dom_tensor [ ] ... " is correct
         
-        
-        set manual_flip_tensor 0
+        if {$nfl==1} {
+        	set manual_flip_tensor 1
+        } else {
+                set manual_flip_tensor 0
+        }
         if {$manual_flip_tensor > 0} {  
                puts "do manual flip of $dom_tensor"
                    # December 28, 2022. Manually flip axis/axes at this step so that output visualization of axes is consistent with other pdb models in case the axes are randomly flipped due to small changes 
                if {$dn==$fixedDomain_ind} {
-                  set man_flip_a1a2a3 {-1 -1 1}
+                  set man_flip_a1a2a3 {1 1 1}
                } else {
-                  set man_flip_a1a2a3 {-1 -1 -1}
+                  puts "pdbMol: $nfl, domain: $dn"
+                  set man_flip_a1a2a3 {1 1 -1}
                }	  
                
                
