@@ -224,7 +224,7 @@ if {$calc_tensor > 0} {
         
  
         set manual_flip_tensor 0
-        # specify the models for which the axes needs to be flipped: $nfl==model1|$nfl==model2 etc}
+        ### specify the models $nfl for which the axes needs to be flipped: $nfl==0, $nfl==1 etc
         if {$nfl==1} {
            set manual_flip_tensor 1
         } 
