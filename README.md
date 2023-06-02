@@ -2,7 +2,6 @@
 Maji, S. et al. 2017. Quantitative Characterization of Domain Motions in Molecular Machines. 
 https://doi.org/10.1021/acs.jpcb.6b10732
 
-
 Dependencies:
 1. To Perform Volume segmentation: DIP image processing library (for segmentation of the 3D density maps, executables for segmentation code written in Matlab/DIP image are provided). Download DIP toolbox and put it under the Utilities folder
 2. Orient package in Tcl by Paul Grayson, See https://www.ks.uiuc.edu/Research/vmd/script_library/scripts/orient/ (included in the Utilities folder and a modified script)
