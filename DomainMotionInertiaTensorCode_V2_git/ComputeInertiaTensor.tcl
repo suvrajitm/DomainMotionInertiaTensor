@@ -57,6 +57,7 @@ set fixedMol [lindex $domain_sels_mol $fixedDomain_ind]
 
 set calc_tensor 1
 
+#############################################################################
 # October 23, 2023
 # if align_force_tarmol_to_refmoldom=1, 
 # we are forcing to alignment of the domain/molecule using [measure fit]
@@ -67,7 +68,7 @@ set calc_tensor 1
 
 # use the principal axes to align instead 
 set align_force_tarmol_to_refmoldom 0 
-    
+##############################################################################    
 
 
 if {$calc_tensor > 0} {
