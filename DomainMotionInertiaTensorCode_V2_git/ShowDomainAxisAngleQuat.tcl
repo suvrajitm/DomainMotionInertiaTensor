@@ -148,7 +148,7 @@ proc ShowDomainAxisAngleQuat {nFiles AllModel_absorientQAxisAngle domname molid 
 
 		puts "com A:$comA,  comB:$comB"
 		puts "com-movement of domain $domname: $d."
-				
+		set domCOMshift $d		
 		# both implementations 1 and 2 have equivalent/exact expressions for the position of the screw axis 
 		# but expressed in two forms   	  
 		set findScrewAxisOrigPoint1 1
@@ -175,6 +175,7 @@ proc ShowDomainAxisAngleQuat {nFiles AllModel_absorientQAxisAngle domname molid 
 			set hinge_residuenums [lindex $hinge_residues 0]
 			set hinge_resids [lindex $hinge_residues 1]
 			set hinge_resnames [lindex $hinge_residues 2]
+			puts $QuatRotAxisFile "domain COM shift = $domCOMshift"
 			puts $QuatRotAxisFile "Hinge axis point = $rotaxisOrigin"
 			puts $QuatRotAxisFile "Hinge residue numbers: $hinge_residuenums"
 			puts $QuatRotAxisFile "Hinge resids: $hinge_resids"
@@ -208,6 +209,7 @@ proc ShowDomainAxisAngleQuat {nFiles AllModel_absorientQAxisAngle domname molid 
 			set hinge_residuenums [lindex $hinge_residues 0]
 			set hinge_resids [lindex $hinge_residues 1]
 			set hinge_resnames [lindex $hinge_residues 2]
+			puts $QuatRotAxisFile "domain COM shift = $domCOMshift"
 			puts $QuatRotAxisFile "\nHinge axis point = $rotaxisOrigin"
 			puts $QuatRotAxisFile "Hinge residue numbers: $hinge_residuenums"
 			puts $QuatRotAxisFile "Hinge resids: $hinge_resids"

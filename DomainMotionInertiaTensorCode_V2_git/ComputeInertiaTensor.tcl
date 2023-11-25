@@ -6,7 +6,7 @@
 ## 
 ## Suvrajit Maji,sm4073@cumc.columbia.edu 
 ## Columbia University
-## Created: May 2015. Modified:April 20,2017 
+## Created: May 2015. Modified:October 23,2023 
 ##############################################################################################################
 
 ## Note:
@@ -26,6 +26,7 @@
 ### reference and all target domains
 set domain_sels_mol {}
 
+puts "frame: $f"
 for {set dn 0} {$dn < $num_domains} {incr dn} {
     set domain_name [lindex $domain_sels_name $dn]
     set domain_sel [subst $$domain_name]
@@ -56,17 +57,30 @@ set fixedMol [lindex $domain_sels_mol $fixedDomain_ind]
 
 set calc_tensor 1
 
+# October 23, 2023
+# if align_force_tarmol_to_refmoldom=1, 
+# we are forcing to alignment of the domain/molecule using [measure fit]
+# otherwise the reference domains are aligned with just the Principal axis
+
+# use rmsd fit for reference domain alignment
+#set align_force_tarmol_to_refmoldom 1
+
+# use the principal axes to align instead 
+set align_force_tarmol_to_refmoldom 0 
+    
+
+
 if {$calc_tensor > 0} {
     # remove all the previous graphics objects
     graphics top delete all  
 
     if {$all_atom_tensorcalc == 0} {
 
-        puts "\nComsidering only the $atoms_to_use atoms for fast computing the Inertia Tensors ...\n"
+        puts "\nConsidering only the $atoms_to_use atoms for fast computing the Inertia Tensors ...\n"
 
     } else {
 
-        puts "\nComsidering all atoms for computing the Inertia Tensors (so a bit slower) ...\n"
+        puts "\nConsidering all atoms for computing the Inertia Tensors (so a bit slower) ...\n"
 
     }
     
@@ -107,6 +121,8 @@ if {$calc_tensor > 0} {
 
     # December 28, 2022. Manually flip axis/axes at this step so that output visualization of axes is consistent with other pdb models in case the axes are 
     # randomly flipped due to small changes 
+    #set man_flip1_a1a2a3 {-1 -1 1}
+    #set man_flip2_a1a2a3 {-1 -1 1}
     set man_flip1_a1a2a3 {1 1 1}
     set man_flip2_a1a2a3 {1 1 1}
     # no flip if 1 1 1
@@ -135,7 +151,26 @@ if {$calc_tensor > 0} {
     #### align entire molecule accroding to the alignment of the fixedMol 
     $all_mol move $B
         
-    
+    # October 23, 2023
+    # if align_force_tarmol_to_refmoldom=1, we are forcing to align the fixed domain of second pdb to the fixed domain of 
+    # the first pdb , even when the principal axes are very slightly mis-aligned
+    # Note that approximating the entire big domain by three principle axes may not always represent the 
+    # domain atom distribution the way we expect.
+    puts "fixed domain selection: [subst $$fixDomSel]"
+    if {$align_force_tarmol_to_refmoldom > 0} {
+        set fixedDomSel [subst $$fixDomSel]
+        set fixedDomMol [atomselect $molid_model_full $fixedDomSel frame $f]
+        if {$nfl==0} {
+            set fixedDomMolref $fixedDomMol
+        } else {
+            set fixedDomMoltar $fixedDomMol
+            set transMat [measure fit $fixedDomMoltar $fixedDomMolref]
+            $all_mol move $transMat
+        }
+        
+    }
+
+    # do we need to re select the atoms afer the alignment?
     set fixdomain_cen [measure center $fixedMol weight mass]  
     puts "Fixed Domain centroid : $fixdomain_cen\n"
 
@@ -195,13 +230,10 @@ if {$calc_tensor > 0} {
     set Principal_axes_domain_names {}
 
     for {set dn 0} {$dn < $num_domains} {incr dn} {
-
         if {$dn==$fixedDomain_ind} {
-
             set adjust_direction 0
 
         } else {
-
             set adjust_direction 1
         }
 
@@ -223,20 +255,22 @@ if {$calc_tensor > 0} {
         ### so the syntax "set $dom_tensor [ ] ... " is correct
         
  
-        set manual_flip_tensor 0
+        set manual_flip_tensor 1
+        set adjust_direction 0
         ### specify the models $nfl for which the axes needs to be flipped: $nfl==0, $nfl==1 etc
         if {$nfl==1} {
            set manual_flip_tensor 1
         } 
+
         if {$manual_flip_tensor > 0} { 
 
                puts "do manual flip of $dom_tensor"
                    # December 28, 2022. Manually flip axis/axes at this step so that output visualization of axes is consistent with other pdb models in case the axes are randomly flipped due to small changes 
                if {$dn==$fixedDomain_ind} {
-                  set man_flip_a1a2a3 {1 1 1}
+                  set man_flip_a1a2a3 {-1 1 -1}
                } else {
                   puts "pdbMol: $nfl, domain: $dn"
-                  set man_flip_a1a2a3 {1 1 -1}
+                  set man_flip_a1a2a3 {-1 1 1}
                }	  
                
                

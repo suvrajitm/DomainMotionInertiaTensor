@@ -48,9 +48,19 @@ set contactDist 6.0
 #set dataset "30Sstate12"
 #set dataset "asso-3state"
 
-set dataset "splitting-12"
+#set dataset "splitting-12"
 #set dataset "splitting-13"
 #set dataset "70Snohflxcontrol"
+
+#set dataset "new_splitting-c1"
+#set dataset "new_splitting-12"
+#set dataset "new_splitting-13"
+
+set dataset "new-70S-split-C1-03Oct2023"
+#set dataset "new-70S-split-C2-03Oct2023"
+#set dataset "new-70S-split-C3-03Oct2023"
+#set dataset "new-70S-split-12-03Oct2023"
+#set dataset "new-70S-split-13-03Oct2023"
 
 #set PDBdir "../../../DomainMotionProjectData/EF2Data/PDBData/$dataset"
 set PDBdir "../pdb_files/$dataset" 
@@ -228,16 +238,16 @@ for {set nfl 0} {$nfl < $nFiles} {incr nfl} {
     set pdbf [lindex $pdb_files $nfl]	
 
     if {$PSFfile==1} {
-    set psff [lindex $psf_files $nfl]
-    puts "\n\n\n\n*** Currently loading $pdbf $psff ***"
+        set psff [lindex $psf_files $nfl]
+        puts "\n\n\n\n*** Currently loading $pdbf $psff ***"
 
     } else {
-    puts "\n\n\n\n*** Currently loading $pdbf***"
+        puts "\n\n\n\n*** Currently loading $pdbf***"
     }
     mol new $PDBdir/$pdbf  
 
     if {$PSFfile==1} {
-    mol addfile $PDBdir/$psff 
+        mol addfile $PDBdir/$psff 
     }
 
     ########################################################################################### 
@@ -259,28 +269,28 @@ for {set nfl 0} {$nfl < $nFiles} {incr nfl} {
     ###########################################################################################
     if {$map_segment_only == 0} {  
 
-    source ShowMolRep.tcl
-    set show_more_view 1
+        source ShowMolRep.tcl
+        set show_more_view 1
 
-    source GenerateVMDScreenSnaps.tcl
+        source GenerateVMDScreenSnaps.tcl
 
-    puts "\nEnd of tensor analysis for $pdbf structural data ...\n\n\n"
+        puts "\nEnd of tensor analysis for $pdbf structural data ...\n\n\n"
     }
     
     if {$map_segment_only == 0} {
-    #### Turn off all the other molecules except the last one in the list 
-    if {$nfl != $nFiles-1} {
-        mol off top 
-    }
+        #### Turn off all the other molecules except the last one in the list 
+        if {$nfl != $nFiles-1} {
+            mol off top 
+        }
     }
 
     ### to bring the views of loaded molecules to the same scale
     display resetview
 
     if {$map_segment_only > 0} {
-    ### When only segmentation is performed (e.g. initially to check)
-    ### stop after the first pdb (used for generating the volume and segmentation)
-    break
+        ### When only segmentation is performed (e.g. initially to check)
+        ### stop after the first pdb (used for generating the volume and segmentation)
+        break
     }
 
 }
@@ -317,7 +327,7 @@ if {$map_segment_only > 0} {
 ########################################################################################### 
 if {$map_segment_only==0} {
     if {$quaternion_calc >0} {
-source MotionStats.tcl	
+        source MotionStats.tcl	
     }
 }
 
