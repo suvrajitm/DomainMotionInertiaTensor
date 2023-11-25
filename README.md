@@ -2,6 +2,7 @@
 Maji, S. et al. 2017. Quantitative Characterization of Domain Motions in Molecular Machines. 
 https://doi.org/10.1021/acs.jpcb.6b10732
 
+
 Dependencies:
 1. To Perform Volume segmentation: DIP image processing library (for segmentation of the 3D density maps, executables for segmentation code written in Matlab/DIP image are provided). Download DIP toolbox and put it under the Utilities folder
 2. Orient package in Tcl by Paul Grayson, See https://www.ks.uiuc.edu/Research/vmd/script_library/scripts/orient/ (included in the Utilities folder and a modified script)
@@ -15,6 +16,10 @@ You can set the domain definitions obtained either through segmentation or from 
 
 SegmentDensityMap.tcl is used for segmenting the map. There is a variable "mapSeglist_idx" in this script which is used to keep track of the segment indices. It can be set automatically but here it has been set manually for the data at hand with 4 different segments (0 - 3) to match the indices of the segmented domains. 
 
+Updates 2023:
+1. Determine the Hinge point through which the rotation axis and angle passes through
+2. Align the reference domains between two pdbs using rmsd fit in vmd, since sometimes the alignment with just the three principal axes is not good enough
+3.   
 
 Notes: 
 Pending issue:  Due to the random sign flip of eigenvectors , sometimes the axes sign flips in direction from one pdb to another pdb (small changes in the residue position or mass distribution). A fix for the sign flips is available in the literature, and needs to be implemented in the Orient script.
