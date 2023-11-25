@@ -38,25 +38,13 @@ set contactDist 6.0
 ###########################################################################################
 #set dataset "splitting-12"
 #set dataset "splitting-13"
-#set dataset "splitting-23"
-#set dataset "splitting-123"
-#set dataset "splitting-123_control"
-#set dataset "splitting-c1"
-#set dataset "splitting-c2"
-#set dataset "splitting-c3"
-
-#set dataset "30Sstate12"
-#set dataset "asso-3state"
-
-#set dataset "splitting-12"
-#set dataset "splitting-13"
 #set dataset "70Snohflxcontrol"
 
-#set dataset "new_splitting-c1"
+set dataset "new_splitting-c1"
 #set dataset "new_splitting-12"
 #set dataset "new_splitting-13"
 
-set dataset "new-70S-split-C1-03Oct2023"
+#set dataset "new-70S-split-C1-03Oct2023"
 #set dataset "new-70S-split-C2-03Oct2023"
 #set dataset "new-70S-split-C3-03Oct2023"
 #set dataset "new-70S-split-12-03Oct2023"
