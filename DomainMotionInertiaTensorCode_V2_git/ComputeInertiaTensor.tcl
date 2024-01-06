@@ -70,6 +70,7 @@ set calc_tensor 1
 set align_force_tarmol_to_refmoldom 0 
 ##############################################################################    
 
+set align_target_to_reference_mol 0
 
 if {$calc_tensor > 0} {
     # remove all the previous graphics objects
@@ -85,12 +86,8 @@ if {$calc_tensor > 0} {
 
     }
     
-    ## Step 1. Calculate the initial Principal Moment of Inertia for the reference subunit unit.
-    ## Align the reference principal axes to the XYZ cartesian coordinate system. This would help us to characterize the motion of the 
-    ## othe subunit relative to a fixed axis system
 
-    # translate the full molecule such that the centroid of reference domain is at origin (0,0,0)
-
+    ## Step 1a. Translate the full molecule such that the centroid of reference domain is at origin (0,0,0)
     puts  "Measuring center of the fixed molecule"
     set fixedmol_c [measure center $fixedMol weight mass] 
     puts "\n\nIntial fixed molecule centroid : $fixedmol_c"
@@ -115,60 +112,70 @@ if {$calc_tensor > 0} {
 
     unset all_mol
     set all_mol [atomselect $molid_model_full "all" frame $f]
-    
-    puts "\n***Computing the principal axes for the reference molecule $fixedDomain_name ...\n"
-    #(a) First Align the molecule-to-be-fixed, e.g Principal Axis 3 to the Z-axis {0 0 1} 
-    set adjust_direction 0
-
-    # December 28, 2022. Manually flip axis/axes at this step so that output visualization of axes is consistent with other pdb models in case the axes are 
-    # randomly flipped due to small changes 
-    #set man_flip1_a1a2a3 {-1 -1 1}
-    #set man_flip2_a1a2a3 {-1 -1 1}
-    set man_flip1_a1a2a3 {1 1 1}
-    set man_flip2_a1a2a3 {1 1 1}
-    # no flip if 1 1 1
-    set Iref {}
-    set Jref {}
-
-    set Iref [Orient::calc_principalaxes $fixedMol $adjust_direction $man_flip1_a1a2a3]
-    puts "\nIref=$Iref"
-    
-    set A [orient $fixedMol [lindex $Iref 2] {0 0 1}]
 
 
-    #### align entire molecule according to the alignment of the fixedMol 
-    set all_mol [atomselect $molid_model_full "all" frame last]
-    $all_mol move $A
+    ## Step 1b. Calculate the initial Principal Moment of Inertia for the reference subunit unit.
+    ## Align the reference principal axes to the XYZ cartesian coordinate system. This would help us to characterize the motion of the 
+    ## othe subunit relative to a fixed axis system
+
+    if {$align_target_to_reference_mol > 0} {
+
+        puts "\n***Computing the principal axes for the reference molecule $fixedDomain_name ...\n"
+        #(a) First Align the molecule-to-be-fixed, e.g Principal Axis 3 to the Z-axis {0 0 1} 
+        set adjust_direction 0
+
+        # December 28, 2022. Manually flip axis/axes at this step so that output visualization of axes is consistent with other pdb models in case the axes are 
+        # randomly flipped due to small changes 
+        #set man_flip1_a1a2a3 {-1 -1 1}
+        #set man_flip2_a1a2a3 {-1 -1 1}
+        set man_flip1_a1a2a3 {1 1 1}
+        set man_flip2_a1a2a3 {1 1 1}
+        # no flip if 1 1 1
+        set Iref {}
+        set Jref {}
+
+        set Iref [Orient::calc_principalaxes $fixedMol $adjust_direction $man_flip1_a1a2a3]
+        puts "\nIref=$Iref"
         
-    #(b) Next Align the molecule-to-be-fixed, Principal Axis 2 to the Y-axis {0 1 0} 
-
-    set Jref [Orient::calc_principalaxes $fixedMol $adjust_direction $man_flip2_a1a2a3] 
-    puts "\nJref=$Jref"
+        set A [orient $fixedMol [lindex $Iref 2] {0 0 1}]
 
 
+        #### align entire molecule according to the alignment of the fixedMol 
+        set all_mol [atomselect $molid_model_full "all" frame last]
+        $all_mol move $A
+            
+        #(b) Next Align the molecule-to-be-fixed, Principal Axis 2 to the Y-axis {0 1 0} 
 
-    set B [orient $fixedMol [lindex $Jref 1] {0 1 0}]
+        set Jref [Orient::calc_principalaxes $fixedMol $adjust_direction $man_flip2_a1a2a3] 
+        puts "\nJref=$Jref"
 
-    #### align entire molecule accroding to the alignment of the fixedMol 
-    $all_mol move $B
-        
-    # October 23, 2023
-    # if align_force_tarmol_to_refmoldom=1, we are forcing to align the fixed domain of second pdb to the fixed domain of 
-    # the first pdb , even when the principal axes are very slightly mis-aligned
-    # Note that approximating the entire big domain by three principle axes may not always represent the 
-    # domain atom distribution the way we expect.
-    puts "fixed domain selection: [subst $$fixDomSel]"
-    if {$align_force_tarmol_to_refmoldom > 0} {
-        set fixedDomSel [subst $$fixDomSel]
-        set fixedDomMol [atomselect $molid_model_full $fixedDomSel frame $f]
-        if {$nfl==0} {
-            set fixedDomMolref $fixedDomMol
-        } else {
-            set fixedDomMoltar $fixedDomMol
-            set transMat [measure fit $fixedDomMoltar $fixedDomMolref]
-            $all_mol move $transMat
+
+
+        set B [orient $fixedMol [lindex $Jref 1] {0 1 0}]
+
+        #### align entire molecule accroding to the alignment of the fixedMol 
+        $all_mol move $B
+            
+        # October 23, 2023
+        # if align_force_tarmol_to_refmoldom=1, we are forcing to align the fixed domain of second pdb to the fixed domain of 
+        # the first pdb , even when the principal axes are very slightly mis-aligned
+        # Note that approximating the entire big domain by three principle axes may not always represent the 
+        # domain atom distribution the way we expect.
+        puts "fixed domain selection: [subst $$fixDomSel]"
+        if {$align_force_tarmol_to_refmoldom > 0} {
+            set fixedDomSel [subst $$fixDomSel]
+            set fixedDomMol [atomselect $molid_model_full $fixedDomSel frame $f]
+            if {$nfl==0} {
+                set fixedDomMolref $fixedDomMol
+            } else {
+                set fixedDomMoltar $fixedDomMol
+                set transMat [measure fit $fixedDomMoltar $fixedDomMolref]
+                $all_mol move $transMat
+            }
+            
         }
-        
+    } else {
+        puts "\nTarget and reference molecules (PDBs) were not aligned using principal axes or rmsd fit. Make sure they are pre-aligned...\n"
     }
 
     # do we need to re select the atoms afer the alignment?
