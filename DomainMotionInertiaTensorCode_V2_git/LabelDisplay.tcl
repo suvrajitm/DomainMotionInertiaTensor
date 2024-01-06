@@ -31,7 +31,12 @@ proc LabelDisplay {pdbf fixedmol_cen axis offset lblcol} {
 		}
     }
 
+	# for now, add text at the position defined by below, irrespective of the above textpos locations 
+	set xp [expr $offset + [lindex $fixedmol_cen 0]]
+	set yp [expr $offset + [lindex $fixedmol_cen 1]]
+	set zp [expr $offset + [lindex $fixedmol_cen 2]]
+	set textposxyz [vecadd $fixedmol_cen [list $xp $yp $zp]]
     draw color $lblcol
-    graphics top text $textpos "[format "%s" $pdbf ]" size 1 thickness 2
+    graphics top text $textposxyz "[format "%s" $pdbf ]" size 1 thickness 2
    
 }
