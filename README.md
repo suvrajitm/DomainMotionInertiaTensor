@@ -19,13 +19,15 @@ SegmentDensityMap.tcl is used for segmenting the map. There is a variable "mapSe
 Few selected updates 2022-2023:
 1. Determine the Hinge point through which the rotation axis and angle passes.
    Derivations and implementation in the Cell resource paper 2023:
-   "Bhattacharjee, Sayan; Feng, Xiangsong; Maji, Suvrajit; Dadhwal, Prikshat; Zhang, Zhening; Brown, Zuben P.; Frank, Joachim, Time Resolution in Cryo-EM Using a
-   Novel PDMS-Based Microfluidic Chip Assembly and Its Application to the Study of HflX-Mediated Ribosome Recycling."
-3. Option to align the reference domains between two pdbs using rmsd fit in vmd, since sometimes the alignment with just the three principal axes is not good
-   enough. The variable "align_force_tarmol_to_refmoldom" in ComputeIntertiaTensor.tcl can be set to 1 for rmsd fit of reference domains or 0 for just with using 
-   the three principal axes 
-5. Manually flip the principal axes directions by setting the variable "man_flip1_a1a2a3" with the triplet values of 1, or -1 for each axis direction, so that the     flips are also reflected in the visualized axes for the pdb structures on vmd, earlier we could only calculate the rotation correctly after fixing the flip
-   manually but the generated images would still be incorrect.  
+   "Bhattacharjee, Sayan; Feng, Xiangsong; Maji, Suvrajit; Dadhwal, Prikshat; Zhang, Zhening; Brown, Zuben P.; Frank, Joachim, Time
+   Resolution in Cryo-EM Using a Novel PDMS-Based Microfluidic Chip Assembly and Its Application to the Study of HflX-Mediated Ribosome 
+   Recycling."
+3. Option to align the reference domains between two pdbs using rmsd fit in vmd, since sometimes the alignment with just the three    
+   principal axes is not good enough. The variable "align_force_tarmol_to_refmoldom" in ComputeIntertiaTensor.tcl can be set to 1 (rmsd 
+   fit of target to reference domain) or 0 (fit of target to reference domain using the three principal axes) 
+5. Manually flip the principal axes directions by setting the variable "man_flip1_a1a2a3" with the triplet values of 1, or -1 for each axis 
+   direction, so that the     flips are also reflected in the visualized axes for the pdb structures on vmd, earlier we could only 
+   calculate the rotation correctly after fixing the flip manually but the generated images would still be incorrect.  
   
 
 Notes: 
