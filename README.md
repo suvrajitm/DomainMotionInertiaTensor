@@ -1,6 +1,8 @@
 # DomainMotionInertiaTensor
-Maji, S. et al. 2017. Quantitative Characterization of Domain Motions in Molecular Machines. 
+**Suvrajit Maji**, Rezvan Shahoei, Klaus Schulten, Joachim Frank. JPCB. 2017. Quantitative Characterization of Domain Motions in Molecular Machines. 
 https://doi.org/10.1021/acs.jpcb.6b10732
+
+Sayan Bhattacharjee, Xiangsong Feng, **Suvrajit Maji**, Prikshat Dadhwal, Zhening Zhang, Zuben P Brown, Joachim Frank. Cell. 2024. Time resolution in cryo-EM using a PDMS-based microfluidic chip assembly and its application to the study of HflX-mediated ribosome recycling.
 
 
 Dependencies:
@@ -18,7 +20,7 @@ SegmentDensityMap.tcl is used for segmenting the map. There is a variable "mapSe
 
 Few selected updates 2022-2023:
 1. Determine the Hinge point through which the rotation axis and angle passes.
-   Derivations and implementation in the Cell resource paper 2023:
+   Derivations and implementation in the Cell paper 2024:
    "Bhattacharjee, Sayan; Feng, Xiangsong; Maji, Suvrajit; Dadhwal, Prikshat; Zhang, Zhening; Brown, Zuben P.; Frank, Joachim, Time
    Resolution in Cryo-EM Using a Novel PDMS-Based Microfluidic Chip Assembly and Its Application to the Study of HflX-Mediated Ribosome 
    Recycling."
