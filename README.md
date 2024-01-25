@@ -1,8 +1,8 @@
 # DomainMotionInertiaTensor
-**Suvrajit Maji**, Rezvan Shahoei, Klaus Schulten, Joachim Frank. JPCB. 2017. Quantitative Characterization of Domain Motions in Molecular Machines. 
+1. **Suvrajit Maji**, Rezvan Shahoei, Klaus Schulten, Joachim Frank. JPCB. 2017. Quantitative Characterization of Domain Motions in Molecular Machines. 
 https://doi.org/10.1021/acs.jpcb.6b10732
 
-Sayan Bhattacharjee, Xiangsong Feng, **Suvrajit Maji**, Prikshat Dadhwal, Zhening Zhang, Zuben P Brown, Joachim Frank. Cell. 2024. Time resolution in cryo-EM using a PDMS-based microfluidic chip assembly and its application to the study of HflX-mediated ribosome recycling.
+2. Sayan Bhattacharjee, Xiangsong Feng, **Suvrajit Maji**, Prikshat Dadhwal, Zhening Zhang, Zuben P Brown, Joachim Frank. Cell. 2024. Time resolution in cryo-EM using a PDMS-based microfluidic chip assembly and its application to the study of HflX-mediated ribosome recycling.
 
 
 Dependencies:
